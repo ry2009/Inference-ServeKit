@@ -25,12 +25,13 @@ PrimeRL-ServeKit++ provides a production-style reinforcement learning serving br
    ```bash
    make gen-proto
    ```
-3. Launch the gRPC service locally:
+3. Add the repo to your Python path when running modules (e.g., `export PYTHONPATH=$PYTHONPATH:$(pwd)`).
+4. Launch the gRPC service locally:
    ```bash
-   python -m server.main
+   PYTHONPATH=. python -m server.main
    ```
    or use Docker Compose to bring up Redis alongside the bridge.
-4. For an end-to-end smoke, run `scripts/dev_loop.sh` to exercise PPO, GRPO, and perf gates.
+5. For an end-to-end smoke, run `scripts/dev_loop.sh` to exercise PPO, GRPO, and perf gates.
 
 ### Real engine vs. mock engine
 - Set `PRIMERL_ENGINE_BASE_URL` to your vLLM/SGLang/TRT-LLM endpoint and `PRIMERL_ENGINE` accordingly (defaults to `dummy`).
