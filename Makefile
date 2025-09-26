@@ -4,7 +4,7 @@ dev:
 	python -m venv .venv && . .venv/bin/activate && pip install -U pip -r requirements.txt
 
 gen-proto:
-	python -m grpc_tools.protoc -I=api --python_out=. --grpc_python_out=. api/primerl.proto
+	python -m grpc_tools.protoc -I=api --python_out=api --grpc_python_out=api api/primerl.proto
 
 run-perf:
 	python perf/bench_matrix.py --out perf/results.csv
