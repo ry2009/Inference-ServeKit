@@ -1,0 +1,2 @@
+context_tokens,batch_size,precision,speculation,cache,tokens_per_sec,ttfb_ms,p95_ms,gpu_util,cache_hit_rate
+4096,1,bf16,False,False,1000,120,280,0.6,0.7

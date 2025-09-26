@@ -1,0 +1,11 @@
+{
+  "episode_id": "demo-episode",
+  "reward": 0.82,
+  "scores": {
+    "task_score": 0.86,
+    "latency_penalty": -0.04,
+    "policy_penalty": 0.0
+  },
+  "merkle_root": "0x6f44b2f5",
+  "signature": "stub"
+}

@@ -1,0 +1,33 @@
+version: "3.9"
+services:
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+  engine:
+    build:
+      context: .
+      dockerfile: mock_engine/Dockerfile
+    ports:
+      - "8000:8000"
+  verifier:
+    build: .
+    command: uvicorn prime_stack.verifier.api:app --host 0.0.0.0 --port 8080
+    environment:
+      PRIMERL_VERIFIER_SK: ""
+    ports:
+      - "8080:8080"
+  primerl:
+    build: .
+    depends_on:
+      - redis
+      - verifier
+      - engine
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      PRIMERL_ENGINE: vllm
+      PRIMERL_ENGINE_BASE_URL: http://engine:8000
+      PRIMERL_VERIFIER_URL: http://verifier:8080
+    ports:
+      - "50051:50051"
+      - "9300:9300"

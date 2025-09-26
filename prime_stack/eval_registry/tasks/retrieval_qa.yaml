@@ -1,0 +1,8 @@
+task: retrieval_qa
+prompt: |
+  Use the browser tool to fetch the latest weather headline.
+expected_schema:
+  type: object
+  properties:
+    tool
+    result

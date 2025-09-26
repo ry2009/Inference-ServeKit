@@ -1,0 +1,50 @@
+{
+  "title": "PrimeRL ServeKit",
+  "panels": [
+    {
+      "title": "Tokens per Second",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "rate(primerl_tokens_total[1m])"
+        }
+      ]
+    },
+    {
+      "title": "Request Latency",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(primerl_request_latency_seconds_bucket[5m])) by (le))"
+        }
+      ]
+    },
+    {
+      "title": "KV Resident Bytes",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "primerl_kv_resident_bytes"
+        }
+      ]
+    },
+    {
+      "title": "Queue Depth",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "primerl_queue_depth"
+        }
+      ]
+    },
+    {
+      "title": "Cache Hit Rate",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "rate(primerl_prefix_cache_hits_total[5m])"
+        }
+      ]
+    }
+  ]
+}

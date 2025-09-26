@@ -1,0 +1,76 @@
+INFO:root:PrimeRL server starting on port 50051 (engine=vllm)
+INFO:root:Metrics exporter listening on 9300
+INFO:server.service:Routing session c7096cab-47cf-4ad7-a831-ec5a16f468d0 to node None
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 404 Not Found"
+WARNING:server.service:Decode failure for session c7096cab-47cf-4ad7-a831-ec5a16f468d0: object of type 'HTTPStatusError' has no len()
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 404 Not Found"
+ERROR:grpc._cython.cygrpc:Unexpected [TypeError] raised by servicer method [/primerl.PrimeRL/Step]
+Traceback (most recent call last):
+  File "/home/shadeform/projects/primerl-servekit/server/service.py", line 177, in Step
+    accepted_mask = [True] * len(tokens)
+TypeError: object of type 'HTTPStatusError' has no len()
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "src/python/grpcio/grpc/_cython/_cygrpc/aio/server.pyx.pxi", line 689, in grpc._cython.cygrpc._handle_exceptions
+  File "src/python/grpcio/grpc/_cython/_cygrpc/aio/server.pyx.pxi", line 852, in _handle_rpc
+  File "src/python/grpcio/grpc/_cython/_cygrpc/aio/server.pyx.pxi", line 677, in _handle_stream_stream_rpc
+  File "src/python/grpcio/grpc/_cython/_cygrpc/aio/server.pyx.pxi", line 501, in _finish_handler_with_stream_responses
+  File "/home/shadeform/projects/primerl-servekit/server/service.py", line 180, in Step
+    tokens, accepted_mask = await self._failover_replay(
+  File "/home/shadeform/projects/primerl-servekit/server/service.py", line 281, in _failover_replay
+    return tokens, [True] * len(tokens)
+TypeError: object of type 'HTTPStatusError' has no len()
+INFO:server.service:Routing session 8a4c0256-cec7-4d61-bc5f-0e81dad30b18 to node None
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8080/verify "HTTP/1.1 200 OK"
+INFO:server.service:Routing session 845645ae-3a5d-458e-9bc5-d8e379f45622 to node None
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8080/verify "HTTP/1.1 200 OK"
+INFO:server.service:Routing session 1b3e6ec9-64c2-4ea6-915b-f1af5df1a529 to node None
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8080/verify "HTTP/1.1 200 OK"
+INFO:server.service:Routing session d7465af2-4936-45aa-8eac-d18e850bd3d3 to node None
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8080/verify "HTTP/1.1 200 OK"
+INFO:server.service:Routing session 36175f54-e9d9-45f8-86ab-8125b45b45ea to node None
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8080/verify "HTTP/1.1 200 OK"
+INFO:server.service:Routing session b9d02d02-7da1-4ae6-b69d-9fb1e580e47a to node None
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8080/verify "HTTP/1.1 200 OK"
+INFO:server.service:Routing session f5cf5467-b29e-4f92-883c-c68b4b9a2b3d to node None
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8000/v1/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8080/verify "HTTP/1.1 200 OK"

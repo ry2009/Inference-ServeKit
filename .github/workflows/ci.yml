@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Generate protobufs
+        run: make gen-proto
+      - name: Run pytest
+        run: pytest -q
+      - name: Start Redis
+        run: docker compose up -d redis
+      - name: Launch PrimeRL server
+        run: |
+          python -m server.main &
+          echo $! > server.pid
+          sleep 5
+      - name: Run perf matrix
+        run: |
+          python perf/bench_matrix.py --mini --out perf/results.csv
+          python perf/perf_gate.py --baseline perf/baseline.csv --current perf/results.csv
+      - name: Smoke PPO demo
+        run: python demos/ppo_summarize_tooluse.py --steps 1 --speculative --grammar sql_v1
+      - name: Smoke GRPO learner
+        run: python grpo/learner.py --steps 1 --k 2 --speculative
+      - name: Shutdown server
+        if: always()
+        run: |
+          kill $(cat server.pid)
+          docker compose down
+      - name: Upload perf artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: perf-results
+          path: perf/results.csv

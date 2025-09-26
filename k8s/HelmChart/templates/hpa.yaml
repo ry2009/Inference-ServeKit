@@ -1,0 +1,28 @@
+{{- if .Values.autoscaling.enabled }}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "primerl-servekit.fullname" . }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "primerl-servekit.fullname" . }}
+  minReplicas: 1
+  maxReplicas: 6
+  metrics:
+    - type: Pods
+      pods:
+        metric:
+          name: primerl_tokens_per_sec
+        target:
+          type: AverageValue
+          averageValue: {{ .Values.autoscaling.targetTokensPerSec }}
+    - type: Pods
+      pods:
+        metric:
+          name: primerl_request_latency_p95_ms
+        target:
+          type: AverageValue
+          averageValue: {{ .Values.autoscaling.targetP95LatencyMs }}
+{{- end }}

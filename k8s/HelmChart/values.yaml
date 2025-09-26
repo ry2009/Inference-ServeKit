@@ -1,0 +1,15 @@
+engine: vllm
+models:
+  llama3_8b:
+    image: your/vllm:tag
+    replicas: 1
+service:
+  type: ClusterIP
+metrics:
+  enabled: true
+autoscaling:
+  enabled: true
+  targetTokensPerSec: 2000
+  targetP95LatencyMs: 300
+redis:
+  enabled: true

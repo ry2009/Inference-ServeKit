@@ -1,0 +1,30 @@
+syntax = "proto3";
+package primerl;
+
+service PrimeRL {
+  rpc StartEpisode (StartReq) returns (StartResp);
+  rpc Step (stream StepReq) returns (stream StepResp);
+  rpc EndEpisode (EndReq) returns (EndResp);
+}
+
+message StartReq  { string env_id=1; string model=2; bytes prompt_fp=3; string prompt=4; bool pin_prefill=5; }
+message StartResp { string session_id=1; bool cache_hit=2; }
+
+message StepReq {
+  string session_id=1;
+  string obs=2;
+  int32  max_new_tokens=3;
+  string grammar_id=4;
+  bool   speculative=5;
+}
+
+message StepResp {
+  string token=1;
+  int64  t_us=2;
+  int64  kv_bytes=3;
+  bool   boundary=4;
+  bool   accepted=5;
+}
+
+message EndReq  { string session_id=1; }
+message EndResp { bool evicted=1; }

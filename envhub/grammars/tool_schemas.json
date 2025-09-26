@@ -1,0 +1,61 @@
+{
+  "sql_v1": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "SQLToolCall",
+    "type": "object",
+    "properties": {
+      "tool": {
+        "enum": ["sql"]
+      },
+      "query": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "required": ["tool", "query"],
+    "additionalProperties": false
+  },
+  "browser_v1": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "BrowserToolCall",
+    "type": "object",
+    "properties": {
+      "tool": {
+        "enum": ["browser"]
+      },
+      "url": {
+        "type": "string"
+      },
+      "action": {
+        "enum": ["open", "click", "extract"]
+      }
+    },
+    "required": ["tool", "url", "action"],
+    "additionalProperties": false
+  },
+  "http_v1": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "HTTPToolCall",
+    "type": "object",
+    "properties": {
+      "tool": { "enum": ["http"] },
+      "method": { "enum": ["GET", "POST", "PUT", "DELETE"] },
+      "url": { "type": "string" },
+      "body": { "type": ["string", "null"] }
+    },
+    "required": ["tool", "method", "url"],
+    "additionalProperties": false
+  },
+  "code_v1": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "CodeSandboxCall",
+    "type": "object",
+    "properties": {
+      "tool": { "enum": ["code"] },
+      "language": { "type": "string" },
+      "source": { "type": "string" }
+    },
+    "required": ["tool", "language", "source"],
+    "additionalProperties": false
+  }
+}

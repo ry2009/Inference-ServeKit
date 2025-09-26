@@ -1,0 +1,5 @@
+task: sql_qa
+prompt: |
+  Use the sql tool to answer: How many orders were placed in 2023?
+expected_rows:
+  - ["42"]

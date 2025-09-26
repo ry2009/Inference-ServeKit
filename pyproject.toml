@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=65", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "primerl-servekit"
+version = "0.1.0"
+description = "RL serving bridge with stateful decode, speculation, caching, and observability."
+authors = [{ name = "PrimeRL Team" }]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "grpcio",
+    "grpcio-tools",
+    "fastapi",
+    "uvicorn",
+    "pydantic>=2",
+    "httpx",
+    "websockets",
+    "redis",
+    "orjson",
+    "PyYAML",
+    "pynacl",
+    "prometheus-client",
+    "opentelemetry-api",
+    "opentelemetry-sdk",
+    "opentelemetry-exporter-otlp",
+    "numpy",
+    "pandas",
+    "pyarrow"
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-asyncio"
+]
+
+[tool.black]
+line-length = 100
+
+[tool.isort]
+profile = "black"

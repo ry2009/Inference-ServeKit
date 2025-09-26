@@ -1,0 +1,11 @@
+default:
+  egress: deny
+  exceptions: []
+seccomp_sql_v1:
+  egress: deny
+  exceptions:
+    - host: localhost
+      ports: [5432]
+seccomp_code_v1:
+  egress: deny
+  exceptions: []
