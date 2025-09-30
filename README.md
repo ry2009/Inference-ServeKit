@@ -47,7 +47,7 @@ PrimeRL-ServeKit++ provides a production-style reinforcement learning serving br
   - `run_ppo.txt`, `run_grpo.txt` – PPO & GRPO outputs against the remote engine.
   - `results_remote.csv` – perf sweep executed on the GPU host.
 - `scripts/analyze_metrics.py` parses any Prometheus dump (e.g., `metrics.txt`) and prints per-model token totals / latency buckets.
-- `artifacts/research/linear_attention_cpu.txt` (CPU) and `artifacts/research/linear_attention_h200.txt` (H200 GPU) capture the latest log-linear / linear attention benchmarks; use them as templates for rerunning or optimizing the companion kernels.
+- `artifacts/research/linear_attention_cpu.txt`, `linear_attention_cpu_long.txt`, `linear_attention_h200.txt`, and `linear_attention_h200_long.txt` capture the latest log-linear / linear attention benchmarks across CPU and H200 GPU (showing up to 22× speedups on CPU and 4.3× on H200 for 4k-token sequences).
 4. Run the PPO demo, then graduate to GRPO with speculative decoding enabled.
 
 See `docs/design.md` for the architectural overview and `docs/runbook.md` for operational guidance.
