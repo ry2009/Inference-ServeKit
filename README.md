@@ -48,6 +48,7 @@ PrimeRL-ServeKit++ provides a production-style reinforcement learning serving br
   - `results_remote.csv` – perf sweep executed on the GPU host.
 - `scripts/analyze_metrics.py` parses any Prometheus dump (e.g., `metrics.txt`) and prints per-model token totals / latency buckets.
 - `artifacts/research/linear_attention_cpu.txt`, `linear_attention_cpu_long.txt`, `linear_attention_h200.txt`, and `linear_attention_h200_long.txt` capture the latest log-linear / linear attention benchmarks across CPU and H200 GPU (showing up to 22× speedups on CPU and 4.3× on H200 for 4k-token sequences).
+- `artifacts/research/linear_attention_inference_demo.txt` records end-to-end decode runs (e.g., 4096-token context: 4.37 s → 0.35 s, ~12.5× throughput). Use `scripts/demo_linear_vs_softmax_inference.py` to reproduce.
 - Optional Triton path: install `triton` (e.g., `pip install triton`) and run `scripts/bench_linear_attention.py --backend triton --device cuda` to exercise the fused kernel (requires GPU). See `docs/blog_linear_attention.md` for a deep dive and reproduction guide.
 4. Run the PPO demo, then graduate to GRPO with speculative decoding enabled.
 

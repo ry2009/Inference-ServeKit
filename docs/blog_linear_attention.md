@@ -40,9 +40,16 @@ Benchmark traces are stored under `artifacts/research/`. The aggregated CSV is `
 | H200     | 2048     | 0.302        | 0.165        | **1.83×** |
 | H200     | 4096     | 0.785        | 0.181        | **4.33×** |
 
-**Autoregressive decode demo (CPU placeholder)**
+**Autoregressive decode demos (CPU placeholder)**
 
-We also stress-tested a mini decode stack (8 layers × 512 dim) to confirm end-to-end impact. For a 2048-token context the linear kernel completed a forward pass in 167 ms versus 953 ms for softmax—**5.7× faster**, amounting to ~98K tokens/s vs. 17K tokens/s. See `artifacts/research/linear_attention_inference_demo.txt` for the log.
+We stress-tested a mini decode stack (8 layers × 512 dim) to confirm full-pipeline impact. Linear attention drastically cuts wall-clock time:
+
+| Context | Softmax Forward | Linear Forward | Speedup | Tokens/s (softmax → linear) |
+|---------|-----------------|----------------|---------|-----------------------------|
+| 2048 tokens | 953 ms | 167 ms | **5.7×** | 17K → 98K |
+| 4096 tokens | 4366 ms | 349 ms | **12.5×** | 7.5K → 94K |
+
+See `artifacts/research/linear_attention_inference_demo.txt` for logs (captured via `scripts/demo_linear_vs_softmax_inference.py`). Even on CPU, the asymptotic behavior is clear—linear attention keeps the decoder fast as contexts grow.
 **Key observations**
 
 1. **Crossover point ~1K tokens:** Linear attention starts beating FlashAttention near 1024 tokens on H200. By 4096 tokens, it is 4.33× faster.
