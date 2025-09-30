@@ -36,6 +36,7 @@ PrimeRL-ServeKit++ provides a production-style reinforcement learning serving br
 ### Real engine vs. mock engine
 - Set `PRIMERL_ENGINE_BASE_URL` to your vLLM/SGLang/TRT-LLM endpoint and `PRIMERL_ENGINE` accordingly (defaults to `dummy`).
 - `docker-compose.yml` includes a lightweight mock engine (`mock_engine/app.py`) so you can run the full stack (`docker compose up redis engine verifier primerl`). Swap it out by editing the environment variables or removing the `engine` service when targeting real backends.
+- Advanced kernel research (log-linear attention, MesaNet) lives in [`artifacts/research/`](artifacts/research/) and the companion repository [ry2009/-intro-Inference-research](https://github.com/ry2009/-intro-Inference-research); see `docs/research.md` for guidance on merging these speedups into PrimeRL.
 
 ### Artifacts & Observability
 - Sample verifier reward output lives in `artifacts/sample_verifier_reward.json`; perf snapshots in `artifacts/sample_perf_results.csv`.
@@ -46,6 +47,7 @@ PrimeRL-ServeKit++ provides a production-style reinforcement learning serving br
   - `run_ppo.txt`, `run_grpo.txt` – PPO & GRPO outputs against the remote engine.
   - `results_remote.csv` – perf sweep executed on the GPU host.
 - `scripts/analyze_metrics.py` parses any Prometheus dump (e.g., `metrics.txt`) and prints per-model token totals / latency buckets.
+- `artifacts/research/linear_attention_cpu.txt` captures the latest log-linear / linear attention benchmark (1.45–6.39× speedups) executed on the current hardware; use it as a template for rerunning the companion research kernels.
 4. Run the PPO demo, then graduate to GRPO with speculative decoding enabled.
 
 See `docs/design.md` for the architectural overview and `docs/runbook.md` for operational guidance.

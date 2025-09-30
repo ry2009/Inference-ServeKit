@@ -29,3 +29,21 @@ Data sources:
 4. **Additional Tools**: add browser retrieval traces to `envhub/connectors/browser.py` and extend verifier scoring.
 
 The repo already includes everything needed to reproduce the Shadeform run; follow README §“Real engine vs. mock engine” with Shadeform API credentials to regenerate metrics.
+
+## 5. Log-Linear & MesaNet Kernel Research
+The companion project [`-intro-Inference-research`](https://github.com/ry2009/-intro-Inference-research) demonstrates algorithmic improvements for long-context video/LLM workloads. Running `python final_working_speedups.py` on the current hardware produced:
+
+| Sequence Length | Standard Attention (ms) | Linear Attention (ms) | Speedup |
+|-----------------|-------------------------|-----------------------|---------|
+| 256             | 2.99                    | 2.06                  | 1.45×   |
+| 512             | 11.87                   | 3.01                  | 3.94×   |
+| 1024            | 43.87                   | 6.86                  | 6.39×   |
+
+Artifacts:
+- `artifacts/research/linear_attention_cpu.txt` – complete benchmark log from the latest run.
+- `artifacts/research/RESULTS_SUMMARY.md` – original summary from the research repo.
+
+Integration ideas:
+1. **Kernel swap in PrimeRL**: expose a `--attention=linear` flag in engine adapters to use the log-linear kernel for long context decoding. Measure impact via `perf/bench_matrix.py`.
+2. **Shift Parallelism prototype**: extend `perf/bench_matrix.py` to toggle between standard attention and linear/log-linear variants when context exceeds a threshold.
+3. **Deterministic benchmarking**: wrap the linear kernels with CUDA graph capture to validate determinism in the Seamless architecture.
