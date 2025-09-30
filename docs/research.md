@@ -37,17 +37,21 @@ The companion project [`-intro-Inference-research`](https://github.com/ry2009/-i
 |-----------------|-------------------------|-----------------------|---------|
 | 256             | 2.99 (CPU)              | 2.06                  | 1.45×   |
 | 512             | 11.87 (CPU)             | 3.01                  | 3.94×   |
-| 1024            | 43.87 (CPU)             | 6.86                  | 6.39×   |
+| 1024            | 28.52 (CPU)             | 4.21                  | 6.77×   |
+| 2048            | 105.30 (CPU)            | 13.04                 | 8.07×   |
+| 4096            | 568.61 (CPU)            | 25.59                 | 22.22×  |
 | 256             | 0.274 (H200)            | 0.203                 | 1.35×   |
 | 512             | 0.070 (H200)            | 0.171                 | 0.41×   |
 | 1024            | 0.100 (H200)            | 0.155                 | 0.65×   |
 
 Artifacts:
-- `artifacts/research/linear_attention_cpu.txt` – complete benchmark log from the latest run.
+- `artifacts/research/linear_attention_cpu.txt` – baseline CPU benchmark.
+- `artifacts/research/linear_attention_cpu_long.txt` – extended CPU run out to 4096 tokens (shows 22× speedup once sequences dominate).
 - `artifacts/research/linear_attention_h200.txt` – H200 measurements captured with `scripts/bench_linear_attention.py` (shows sub-millisecond kernels and highlights cases where further kernel fusion is required to maintain speedups at small batch sizes).
 - `artifacts/research/RESULTS_SUMMARY.md` – original summary from the research repo.
 
 Integration ideas:
 1. **Kernel swap in PrimeRL**: expose a `--attention=linear` flag in engine adapters to use the log-linear kernel for long context decoding. Measure impact via `perf/bench_matrix.py`.
-2. **Shift Parallelism prototype**: extend `perf/bench_matrix.py` to toggle between standard attention and linear/log-linear variants when context exceeds a threshold.
-3. **Deterministic benchmarking**: wrap the linear kernels with CUDA graph capture to validate determinism in the Seamless architecture.
+2. **GPU kernel optimization**: replace the naive PyTorch implementation with a Triton/CUDA graph kernel so the H200 measurements match the CPU speedups (current results show the crossover point; we need a fused kernel to remove the small-sequence penalty).
+3. **Shift Parallelism prototype**: extend `perf/bench_matrix.py` to toggle between standard attention and linear/log-linear variants when context exceeds a threshold.
+4. **Deterministic benchmarking**: wrap the linear kernels with CUDA graph capture to validate determinism in the Seamless architecture.
