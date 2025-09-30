@@ -10,7 +10,7 @@ import time
 import torch
 import torch.nn.functional as F
 
-from prime_stack.kernels.linear_attention import linear_attention
+from prime_stack.kernels import linear_attention, triton_linear_attention, is_triton_available
 
 
 def attention_baseline(q: torch.Tensor, k: torch.Tensor, v: torch.Tensor) -> torch.Tensor:
@@ -20,7 +20,7 @@ def attention_baseline(q: torch.Tensor, k: torch.Tensor, v: torch.Tensor) -> tor
     return torch.matmul(attn, v)
 
 
-def benchmark(seq_len: int, dim: int, heads: int, warmup: int = 5, iters: int = 20, device: str = "cuda") -> dict[str, float]:
+def benchmark(seq_len: int, dim: int, heads: int, warmup: int = 5, iters: int = 20, device: str = "cuda", backend: str = "pytorch") -> dict[str, float]:
     torch.manual_seed(0)
     if device == "cuda" and not torch.cuda.is_available():
         raise RuntimeError("CUDA device requested but not available")
@@ -54,13 +54,22 @@ def benchmark(seq_len: int, dim: int, heads: int, warmup: int = 5, iters: int = 
         if device == "cuda":
             torch.cuda.synchronize()
 
-    linear = [run(linear_attention) for _ in range(iters)]
+    if backend == "triton":
+        if not is_triton_available():
+            raise RuntimeError("Triton backend requested but triton is not installed")
+
+        def triton_fn(q, k, v):
+            return triton_linear_attention(q, k, v)
+
+        linear_times = [run(triton_fn) for _ in range(iters)]
+    else:
+        linear_times = [run(linear_attention) for _ in range(iters)]
 
     return {
         "seq": seq_len,
         "baseline_ms": statistics.mean(baseline),
-        "linear_ms": statistics.mean(linear),
-        "speedup": statistics.mean(baseline) / statistics.mean(linear),
+        "linear_ms": statistics.mean(linear_times),
+        "speedup": statistics.mean(baseline) / statistics.mean(linear_times),
     }
 
 
@@ -71,11 +80,12 @@ def main():
     parser.add_argument("--heads", type=int, default=8)
     parser.add_argument("--lengths", nargs="*", type=int, default=[256, 512, 1024])
     parser.add_argument("--iters", type=int, default=20)
+    parser.add_argument("--backend", choices=["pytorch", "triton"], default="pytorch")
     args = parser.parse_args()
 
     results = []
     for seq in args.lengths:
-        stats = benchmark(seq, args.dim, args.heads, iters=args.iters, device=args.device)
+        stats = benchmark(seq, args.dim, args.heads, iters=args.iters, device=args.device, backend=args.backend)
         results.append(stats)
         print(
             f"seq={seq:<4} baseline={stats['baseline_ms']:.3f} ms "

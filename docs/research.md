@@ -58,3 +58,5 @@ Integration ideas:
 2. **Fused Triton kernel**: implement a Triton/CUDA kernel to eliminate the small-batch penalty and push H200 speedups toward the 4.33× result observed at 4k tokens.
 3. **Shift Parallelism prototype**: extend `perf/bench_matrix.py` to toggle between quadratic and linear attention based on context length and SLA.
 4. **Deterministic benchmarking**: wrap both kernels with CUDA graph capture to validate determinism in the Seamless architecture.
+
+> Triton backend: install `triton` on GPU hosts and run `scripts/bench_linear_attention.py --backend triton --device cuda` to benchmark the fused kernel variant provided in `prime_stack/kernels/triton_linear_attention.py`.
