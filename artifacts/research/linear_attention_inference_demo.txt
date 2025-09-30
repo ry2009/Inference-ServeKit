@@ -1,0 +1,5 @@
+Decode loop (length=2048, layers=8, dim=512, device=cpu)
+  Softmax attention  : 878.77 ms per forward
+  Linear attention   : 132.69 ms per forward
+  Speedup            : 6.62×
+  Tokens per second  : softmax=18644.3, linear=123477.3
