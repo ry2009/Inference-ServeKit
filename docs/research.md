@@ -35,12 +35,16 @@ The companion project [`-intro-Inference-research`](https://github.com/ry2009/-i
 
 | Sequence Length | Standard Attention (ms) | Linear Attention (ms) | Speedup |
 |-----------------|-------------------------|-----------------------|---------|
-| 256             | 2.99                    | 2.06                  | 1.45×   |
-| 512             | 11.87                   | 3.01                  | 3.94×   |
-| 1024            | 43.87                   | 6.86                  | 6.39×   |
+| 256             | 2.99 (CPU)              | 2.06                  | 1.45×   |
+| 512             | 11.87 (CPU)             | 3.01                  | 3.94×   |
+| 1024            | 43.87 (CPU)             | 6.86                  | 6.39×   |
+| 256             | 0.274 (H200)            | 0.203                 | 1.35×   |
+| 512             | 0.070 (H200)            | 0.171                 | 0.41×   |
+| 1024            | 0.100 (H200)            | 0.155                 | 0.65×   |
 
 Artifacts:
 - `artifacts/research/linear_attention_cpu.txt` – complete benchmark log from the latest run.
+- `artifacts/research/linear_attention_h200.txt` – H200 measurements captured with `scripts/bench_linear_attention.py` (shows sub-millisecond kernels and highlights cases where further kernel fusion is required to maintain speedups at small batch sizes).
 - `artifacts/research/RESULTS_SUMMARY.md` – original summary from the research repo.
 
 Integration ideas:

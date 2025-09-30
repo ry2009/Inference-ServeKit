@@ -1,0 +1,4 @@
+seq=256  baseline=0.171 ms linear=0.168 ms speedup=1.01x
+seq=512  baseline=0.064 ms linear=0.149 ms speedup=0.43x
+seq=1024 baseline=0.096 ms linear=0.146 ms speedup=0.66x
+Average speedup: 0.70x
