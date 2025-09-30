@@ -45,3 +45,20 @@ def linear_attention(q: torch.Tensor, k: torch.Tensor, v: torch.Tensor) -> torch
 @torch.inference_mode()
 def linear_attention_forward(q: torch.Tensor, k: torch.Tensor, v: torch.Tensor) -> torch.Tensor:
     return linear_attention(q, k, v)
+
+
+def causal_linear_attention(q: torch.Tensor, k: torch.Tensor, v: torch.Tensor) -> torch.Tensor:
+    """Causal linear attention using cumulative sums (O(T))."""
+
+    q_prime = kernel_feature_map(q)
+    k_prime = kernel_feature_map(k)
+
+    # Compute cumulative sums for numerator and denominator
+    kv = torch.einsum("bhnd,bhne->bhned", k_prime, v)
+    kv_cumsum = kv.cumsum(dim=2)
+    denom = k_prime.cumsum(dim=2)
+
+    numer = torch.einsum("bhnd,bhned->bhne", q_prime, kv_cumsum)
+    denom_term = torch.einsum("bhnd,bhnd->bhn", q_prime, denom)
+    out = numer / (denom_term.unsqueeze(-1) + 1e-6)
+    return out
